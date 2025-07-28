@@ -11,6 +11,11 @@ It is tested with MicroPython V1.19.1 on ESP32.
 - Ported by: Quan Lin
 - License: GNU GPL v3 (the same as Sunfish)
 
+# Peter Hinch fork
+
+This fork reverts the RAM-saving changes of Quan Lin. Consequently it requires a board
+with SPIRAM. The hope is stronger gameplay. Tested on the UM Feather S3.
+
 # Installation
 
 The file may be installed on target hardware with `mpremote`:

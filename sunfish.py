@@ -6,6 +6,11 @@ It is tested with MicroPython V1.19.1 on ESP32.
 
 - Ported by: Quan Lin
 - License: GNU GPL v3 (the same as Sunfish)
+
+Fork by Peter Hinch (changes annotated PGH)
+This fork reverts some of the RAM-saving changes by Quan Lin: it will not run on
+a standard ESP32, requiring a unit with SPIRAM. Hopefully its game will be stronger.
+I've also increased the "thinking" time to 3s with the sme aim.
 """
 
 import re, time
@@ -142,7 +147,7 @@ MATE_LOWER = piece["K"] - 10 * piece["Q"]
 MATE_UPPER = piece["K"] + 10 * piece["Q"]
 
 # The table size is the maximum number of elements in the transposition table.
-TABLE_SIZE = 300  # 1e7, (QL)
+TABLE_SIZE = 1e7  # (QL) reverted PGH
 
 # Constants for tuning search
 QS_LIMIT = 219
@@ -498,10 +503,7 @@ def main():
                 print("Please enter a move like g8f6")
         hist.append(hist[-1].move(move))
 
-        # Limit the history size. (QL)
-        hist_remained = hist[-8:]
-        hist.clear()
-        hist.extend(hist_remained)
+        # Limit the history size. (QL) - limit removed PGH
 
         # After our move we rotate the board and print it again.
         # This allows us to see the effect of our move.
@@ -531,8 +533,6 @@ def main():
 
 # Observations.
 # No limit on history: though it grows forever, even when it grew to 93 elements
-# RAM use was much the same as on move 2.
-# RAM use increased by ~50K then reduced again.
 # No use of re: GUI is assumed only to submit lexically valid moves.
 
 def game(iboard=None):
@@ -566,7 +566,7 @@ def game(iboard=None):
         # Fire up the engine to look for a move.
         start = time.ticks_ms()
         for _depth, move, score in searcher.search(hist[-1], hist):
-            if time.ticks_diff(time.ticks_ms(), start) > 1000:
+            if time.ticks_diff(time.ticks_ms(), start) > 3000:  # PGH, was 1000
                 break
 
         if score == MATE_UPPER:
