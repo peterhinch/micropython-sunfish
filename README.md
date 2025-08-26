@@ -20,6 +20,10 @@ with SPIRAM. The hope is stronger gameplay. Tested on the UM Feather S3.
 
 The file may be installed on target hardware with `mpremote`:
 ```bash
+$ mpremote mip install github:peterhinch/micropython-sunfish
+```
+or to install Quan Lin's original with its RAM-saving adaptations:
+```bash
 $ mpremote mip install github:jacklinquan/micropython-sunfish
 ```
 
@@ -37,7 +41,7 @@ squares are marked with a `.`character. The appearance of the board is as follow
   3 . . . . . . . .
   2 P P P P . P P P
   1 R N B Q K B N R
-    a b c d e f g h 
+    a b c d e f g h
 ```
 Moves are input and displayed in "algebraic" notation, for example `b1c3` to move a white Knight.
 Castling is done by moving the King, e.g. `e1g1` to castle on the King side - the Rook moves
@@ -219,6 +223,3 @@ board, progressing left to right then by row downwards.
 
 This takes a 64 element `bytes` object and returns the engine's internal representation of a board.
 The format of the `bytes` object is described above in "inverted play".
-
-
-
